@@ -1,9 +1,13 @@
 let buttonColors = ["red", "blue", "green", "yellow"];
-let gameLevel = 1;
+let gameLevel = 0;
 let gamePattern = [];
 let userClickPattern = [];
+let started = false;
 
 function nextSequence() {
+  userClickPattern = [];
+  gameLevel++;
+
   let randomNumber = Math.round(Math.random() * 3);
 
   let randomChosenColor = buttonColors[randomNumber];
@@ -15,7 +19,6 @@ function nextSequence() {
   $(`#${randomChosenColor}`).fadeOut(100).fadeIn(100);
 
   $("h1").text(`Level ${gameLevel}`);
-  return gameLevel++;
 }
 
 $("[type|='button']").click(function (event) {
@@ -39,10 +42,9 @@ function animatePress(currentColor) {
 }
 
 $(document).keypress(function () {
-  if (gameLevel === 1) {
+  if (started === false) {
     nextSequence();
-  } else {
-    $(document).off();
+    started = true;
   }
 });
 
@@ -69,14 +71,7 @@ function checkAnswer(currentLevel) {
 }
 
 function startOver() {
-  gameLevel = 1;
+  gameLevel = 0;
   gamePattern = [];
-  userClickPattern = [];
-  $(document).keypress(function () {
-    if (gameLevel === 1) {
-      nextSequence();
-    } else {
-      $(document).off();
-    }
-  });
+  started = false;
 }
